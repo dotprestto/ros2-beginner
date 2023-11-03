@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 """
-This is a simple node that publishes a string message to the topic "my_first_topic" 
+This is a simple node that publishes a string message to the topic "my_first_topic"
 """  # noqa
 
-from typing import List, Optional
 
 import rclpy
-from rclpy.context import Context
 from rclpy.node import Node
-from rclpy.parameter import Parameter
 
 
 class MyNode(Node):
