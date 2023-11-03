@@ -8,7 +8,8 @@
 			"includePath": [
 				"/opt/ros/iron/include/**",
 				"/home/prestto/ros2_ws/src/my_cpp_pkg/include/**",
-				"/usr/include/**"
+				"/usr/include/**",
+				"%{workspaceFolder}/**"
 			],
 			"name": "ROS",
 			"intelliSenseMode": "gcc-x64",
