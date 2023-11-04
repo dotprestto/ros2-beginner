@@ -14,9 +14,9 @@ from example_interfaces.srv import AddTwoInts
 class AddTwoIntsClientNode(Node):
     def __init__(self):
         super().__init__("add_two_ints_client")
-        self.callback_add_two_ints_server(3, 7)
+        self.call_add_two_ints_server(3, 7)
 
-    def callback_add_two_ints_server(self, a, b):
+    def call_add_two_ints_server(self, a, b):
         client = self.create_client(AddTwoInts, "add_two_ints")
         while not client.wait_for_service(1.0):
             self.get_logger().warn("Waiting for Server Add Two Ints...")
