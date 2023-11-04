@@ -1,12 +1,12 @@
 #include "example_interfaces/msg/string.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-class SmartphoneNode : public rclcpp::Node {
+class RobotNewsStationNode : public rclcpp::Node {
 public:
-  SmartphoneNode() : Node("smartphone") {
+  RobotNewsStationNode() : Node("smartphone") {
     subscriber_ = this->create_subscription<example_interfaces::msg::String>(
         "robot_news", 10,
-        std::bind(&SmartphoneNode::callbackRobotNews, this,
+        std::bind(&RobotNewsStationNode::callbackRobotNews, this,
                   std::placeholders::_1));
 
     RCLCPP_INFO(this->get_logger(), "Smartphone has been started");
@@ -22,7 +22,7 @@ private:
 
 int main(int argc, char const *argv[]) {
   rclcpp::init(argc, argv);
-  auto node = std::make_shared<SmartphoneNode>();
+  auto node = std::make_shared<RobotNewsStationNode>();
   rclcpp::spin(node);
   rclcpp::shutdown();
   return 0;

@@ -13,3 +13,6 @@ insert_final_newline = true
 
 [*{.cpp,.txt}]
 indent_size = 2
+
+[*.msg]
+insert_final_newline = false
