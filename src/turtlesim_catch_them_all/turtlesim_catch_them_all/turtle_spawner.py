@@ -18,7 +18,7 @@ from my_robot_interfaces.srv import CatchTurtle
 class TurtleSpawnerNode(Node):
     def __init__(self):
         super().__init__("turtle_spawner")
-        self.declare_parameter("spawn_frequency", 1)
+        self.declare_parameter("spawn_frequency", 1.0)
 
         self.spawn_frequency_ = self.get_parameter("spawn_frequency").value
 
