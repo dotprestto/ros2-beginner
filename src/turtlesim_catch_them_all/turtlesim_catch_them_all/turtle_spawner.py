@@ -29,7 +29,7 @@ class TurtleSpawnerNode(Node):
             CatchTurtle, "catch_turtle", self.callback_catch_turtle
         )
 
-        self.spawn_turtle_timer_ = self.create_timer(2, self.spawn_new_turtle)
+        self.spawn_turtle_timer_ = self.create_timer(5, self.spawn_new_turtle)
 
     def callback_catch_turtle(self, request, response):
         self.call_kill_server(request.name)
@@ -44,24 +44,21 @@ class TurtleSpawnerNode(Node):
         request = Kill.Request()
         request.name = turtle_name
 
-        future = client.call_async(request=request)
+        future = client.call_async(request)
         future.add_done_callback(
-            partial(self.callback_call_kill_server, turtle_name)
+            partial(self.callback_call_kill, turtle_name=turtle_name)
         )
 
-    def callback_call_kill_server(self, future, turtle_name):
+    def callback_call_kill(self, future, turtle_name):
         try:
             future.result()
-            self.get_logger().error(f"Killed turtle {turtle_name}")
             for i, turtle in enumerate(self.alive_turtles_):
                 if turtle.name == turtle_name:
                     del self.alive_turtles_[i]
                     self.publish_alive_turtles()
                     break
         except Exception as e:
-            self.get_logger().error(
-                f"Service call failed with unexpected error: {e}"
-            )
+            self.get_logger().error("Service call failed %r" % (e,))
 
     def publish_alive_turtles(self):
         msg = TurtleArray()

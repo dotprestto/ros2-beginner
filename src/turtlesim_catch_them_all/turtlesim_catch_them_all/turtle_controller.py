@@ -57,7 +57,7 @@ class TurtleControllerNode(Node):
 
         future = client.call_async(request=request)
         future.add_done_callback(
-            partial(self.callback_call_catch_turtle, turtle_name)
+            partial(self.callback_call_catch_turtle, turtle_name=turtle_name)
         )
 
     def callback_call_catch_turtle(self, future, turtle_name):
@@ -76,13 +76,11 @@ class TurtleControllerNode(Node):
     def callback_alive_turtles(self, msg):
         if len(msg.turtles) > 0:
             self.turtle_to_catch_ = msg.turtles[0]
-            self.get_logger().error(f"FOLLOWING {self.turtle_to_catch_.name}")
 
     def callback_turtle_pose(self, msg):
         self.pose_ = msg
 
     def control_loop(self):
-        self.get_logger().error(f"AAAAAA {self.turtle_to_catch_}")
         if self.pose_ is None or self.turtle_to_catch_ is None:
             return
 
@@ -110,8 +108,6 @@ class TurtleControllerNode(Node):
         else:
             msg.linear.x = 0.0
             msg.angular.z = 0.0
-            self.get_logger().error(f"REACHED {self.turtle_to_catch_.name}")
-
             self.call_catch_turtle_server(self.turtle_to_catch_.name)
             self.turtle_to_catch_ = None
 
