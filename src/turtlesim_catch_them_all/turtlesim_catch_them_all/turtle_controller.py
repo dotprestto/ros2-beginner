@@ -20,8 +20,10 @@ class TurtleControllerNode(Node):
     def __init__(self):
         super().__init__("turtle_controller")
         self.turtle_to_catch_ = None
+        self.catch_closest_turtle_first_ = True
 
         self.pose_ = None
+
         self.cmd_vel_publisher_ = self.create_publisher(
             Twist,
             "turtle1/cmd_vel",
@@ -75,7 +77,23 @@ class TurtleControllerNode(Node):
 
     def callback_alive_turtles(self, msg):
         if len(msg.turtles) > 0:
-            self.turtle_to_catch_ = msg.turtles[0]
+            if self.catch_closest_turtle_first_:
+                closest_turtle = None
+                closest_turtle_distance = None
+
+                for turtle in msg.turtles:
+                    dist_x = turtle.x - self.pose_.x
+                    dist_y = turtle.y - self.pose_.y
+                    distance = math.sqrt(dist_x * dist_x + dist_y * dist_y)
+                    if (
+                        closest_turtle is None
+                        or distance < closest_turtle_distance  # type: ignore
+                    ):
+                        closest_turtle = turtle
+                        closest_turtle_distance = distance
+                self.turtle_to_catch_ = closest_turtle
+            else:
+                self.turtle_to_catch_ = msg.turtles[0]
 
     def callback_turtle_pose(self, msg):
         self.pose_ = msg
