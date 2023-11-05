@@ -5,8 +5,9 @@ public:
   RobotNewsStationNode() : Node("cpp_test") {
     RCLCPP_INFO(this->get_logger(), "Hello Cpp Node with OOP!");
 
-    timer_ = this->create_wall_timer(std::chrono::seconds(1),
-                                     std::bind(&RobotNewsStationNode::timerCallback, this));
+    timer_ = this->create_wall_timer(
+        std::chrono::seconds(1),
+        std::bind(&RobotNewsStationNode::timerCallback, this));
   }
 
 private:
