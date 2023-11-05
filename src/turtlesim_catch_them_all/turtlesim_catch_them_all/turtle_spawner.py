@@ -18,6 +18,9 @@ from my_robot_interfaces.srv import CatchTurtle
 class TurtleSpawnerNode(Node):
     def __init__(self):
         super().__init__("turtle_spawner")
+        self.declare_parameter("spawn_frequency", 1)
+
+        self.spawn_frequency_ = self.get_parameter("spawn_frequency").value
 
         self.alive_turtles_ = []
 
@@ -29,7 +32,10 @@ class TurtleSpawnerNode(Node):
             CatchTurtle, "catch_turtle", self.callback_catch_turtle
         )
 
-        self.spawn_turtle_timer_ = self.create_timer(5, self.spawn_new_turtle)
+        self.spawn_turtle_timer_ = self.create_timer(
+            1.0 / self.spawn_frequency_,  # type: ignore
+            self.spawn_new_turtle,
+        )
 
     def callback_catch_turtle(self, request, response):
         self.call_kill_server(request.name)
